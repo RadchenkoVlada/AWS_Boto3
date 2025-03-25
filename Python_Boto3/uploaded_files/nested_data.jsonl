@@ -1,0 +1,2 @@
+["level1", {"level2": {"level3": {"a": [1, 2, 3], "b": "test", "c": {"1": 1, "2": 2}}, "another_field": "value"}, "list_of_dicts": [{"id": 1, "name": "Item 1"}, {"id": 2, "name": "Item 2"}]}]
+["simple_field", ["a", "b", 1]]

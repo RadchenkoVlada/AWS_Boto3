@@ -1,0 +1,11 @@
+buckets:
+  buildings:
+    bucket_name: "s3-storage-classes-2025-3month-buildings"
+    schema_file: "schemas/schema_bucket_buildings.json"
+  dogs:
+    bucket_name: "s3-storage-classes-2025-3month-dogs"
+    schema_file: "schemas/schema_bucket_dogs.json"
+  person:
+    bucket_name: "s3-storage-classes-2025-3month-person"
+    schema_file: "schemas/schema_bucket_person.json"
+

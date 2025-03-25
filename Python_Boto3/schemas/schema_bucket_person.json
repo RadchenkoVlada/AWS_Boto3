@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "person_id": {
+      "type": "string",
+      "description": "A unique identifier for the person",
+      "minLength": 6
+    },
+    "name": {
+      "type": "object",
+      "properties": {
+        "first_name": {
+          "type": "string",
+          "minLength": 2
+        },
+        "last_name": {
+          "type": "string",
+          "minLength": 2
+        }
+      },
+      "required": ["first_name", "last_name"]
+    }
+    },
+    "address": {
+      "type": "object",
+      "properties": {
+        "country": {
+          "type": "string",
+          "minLength": 2
+        },
+        "city": {
+          "type": "string",
+          "minLength": 2
+        },
+        "street_address": {
+          "type": "string",
+          "minLength": 5
+        }
+      },
+      "required": ["country", "city", "street_address"]
+    },
+  "required": ["person_id", "name", "contact_info", "address"],
+  "additionalProperties": true
+}

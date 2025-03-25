@@ -1,0 +1,9 @@
+{
+  "country": "Ukraine",
+  "city": "Kharkiv",
+  "street_address": "Tobolska Street",
+  "file_name": "kharkiv_info.json",
+  "id_house": 333,
+  "number_inhabitants": 7,
+  "number_floors": 12
+}
