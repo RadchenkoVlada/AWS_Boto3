@@ -1,7 +1,12 @@
+from multiprocessing.connection import Client
+
 import boto3
 import yaml
 import sys
 from pathlib import Path
+
+from botocore.exceptions import ClientError
+
 from constants import ROOT_DIR
 
 class Service:
@@ -76,7 +81,14 @@ class Service:
         :param download_path: Path where the downloaded file will be saved
         """
         if self.config['bucket_name'] in self.all_buckets_in_s3():
-            self.s3.Object(self.config['bucket_name'], download_file_name).load()
+            # checks if the specified object (download_file_name) exists in the specified bucket (bucket_name).
+            try:
+                self.s3.Object(self.config['bucket_name'], download_file_name).load()
+                print("Object exists.")
+            except ClientError as e:
+                if e.response['Error']['Code'] == "404":
+                    raise FileNotFoundError(f"The object '{download_file_name}' does not exist.")
+            # downloads the specified object
             self.s3.Bucket(self.config['bucket_name']).download_file(download_file_name, download_path)
             print(f"File \"{download_file_name}\"was downloaded from \"{self.config['bucket_name']}\" and saved as {download_path}")
         else:
