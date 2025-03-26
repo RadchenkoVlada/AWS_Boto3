@@ -35,20 +35,16 @@ def validate_json(json_path, schema_path):
     return False
 
 
-def check_keys_match(schema_file: str, parameters: dict):
+def check_keys_match(required_keys: list, parameters: dict):
     """
     Check if the keys in the JSON schema match the keys in the parameters.
 
-    :param schema_file: Path to the schema JSON file
+    :param required_keys: List of mandatory parameters
     :param parameters: dict containing the keys to check
     :returns: None, prints mismatches if any
     """
-    with open(schema_file, 'r') as file:
-        schema = json.load(file)
-
-    schema_required_keys = schema.get("required", [])
     missing_keys = []
-    for key in schema_required_keys:
+    for key in required_keys:
         if key not in parameters:
             missing_keys.append(key)
 

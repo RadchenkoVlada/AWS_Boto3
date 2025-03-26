@@ -81,7 +81,6 @@ class Service:
         :param download_path: Path where the downloaded file will be saved
         """
         if self.config['bucket_name'] in self.all_buckets_in_s3():
-            # checks if the specified object (download_file_name) exists in the specified bucket (bucket_name).
             try:
                 self.s3.Object(self.config['bucket_name'], download_file_name).load()
                 print("Object exists.")

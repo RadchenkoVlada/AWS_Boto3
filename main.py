@@ -24,22 +24,22 @@ if __name__ == '__main__':
     # print(download_file_from_s3(bucket_name, download_file_name, download_path))
     try:
         # Uploading
-        # upload_file_name = UPLOAD_FOLDER / 's3_buildings/kharkiv_info_26_032025.json.json'
-        # building_service_object1 = BuildingsService(bucket='buildings')
-        # building_service_object1.upload_file(upload_file_name)
+        upload_file_name = UPLOAD_FOLDER / 's3_buildings/kharkiv_info_26_032025.json.json'
+        building_service_object1 = BuildingsService(bucket='buildings')
+        building_service_object1.upload_file(upload_file_name)
 
 
 
         #Downloading
-        parameters = {
-            "country": "Ukraine",
-            "city": "Kharkiv",
-            "street_address": "Sumska Street",
-            "file_name": "kharkiv_info_26_032025.json",
-        }
-        download_file_path = DOWNLOAD_FOLDER / 's3_buildings/kharkiv_info_26_032025.json'
-        building_service_object1 = BuildingsService(bucket='buildings')
-        building_service_object1.download_file(download_file_path, parameters=parameters)
+        # parameters = {
+        #     "country": "Ukraine",
+        #     "city": "Kharkiv",
+        #     "street_address": "Sumska Street",
+        #     "file_name": "kharkiv_info_26_032025.json",
+        # }
+        # download_file_path = DOWNLOAD_FOLDER / 's3_buildings/kharkiv_info_26_032025.json'
+        # building_service_object1 = BuildingsService(bucket='buildings')
+        # building_service_object1.download_file(download_file_path, parameters=parameters)
 
     except Exception as e:
         print(f"Error occurred: {e}")
