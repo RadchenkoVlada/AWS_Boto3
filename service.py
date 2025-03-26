@@ -9,6 +9,8 @@ from botocore.exceptions import ClientError
 
 from constants import ROOT_DIR
 
+from helpers.custom_logger import CustomLogger
+
 class Service:
     def __init__(self, bucket: str):
         """
@@ -19,6 +21,7 @@ class Service:
         self.config = self._load_config(bucket)
         self._validate_schemas()
         self.s3 = boto3.resource('s3')
+        self.logger = CustomLogger("Service logger", self.config)
 
     def _load_config(self, bucket):
         """Load and parse the config file."""
@@ -41,7 +44,7 @@ class Service:
         """
         schema_file = self.config.get("schema_file")
         if not schema_file or not (ROOT_DIR / schema_file).exists():
-            print(f"Schema file '{schema_file}' not found. Terminating program.")
+            self.logger.error(f"Schema file '{schema_file}' not found. Terminating program.")
             sys.exit(1)
 
     def all_buckets_in_s3(self) -> list:
@@ -53,7 +56,7 @@ class Service:
         try:
             return [bucket.name for bucket in self.s3.buckets.all()]
         except Exception as e:
-            print(f"Error retrieving bucket list: {e}")
+            self.logger.error(f"Error retrieving bucket list: {e}")
             return []
 
     def upload_file_to_s3(self, upload_file_name: str, object_name_in_s3=None):
@@ -68,8 +71,7 @@ class Service:
 
         if self.config['bucket_name'] in self.all_buckets_in_s3():
             self.s3.Bucket(self.config['bucket_name']).upload_file(upload_file_name, object_name_in_s3)
-            # TODO: rewrite all prints to logger
-            print(f"File {upload_file_name} was uploaded to {self.config['bucket_name']} as {object_name_in_s3}")
+            self.logger.info(f"File {upload_file_name} was uploaded to {self.config['bucket_name']} as {object_name_in_s3}")
         else:
             raise Exception(f"Bucket {self.config['bucket_name']} does not exist")
 
@@ -83,12 +85,13 @@ class Service:
         if self.config['bucket_name'] in self.all_buckets_in_s3():
             try:
                 self.s3.Object(self.config['bucket_name'], download_file_name).load()
+                self.logger.debug("Object exists.")
                 print("Object exists.")
             except ClientError as e:
                 if e.response['Error']['Code'] == "404":
                     raise FileNotFoundError(f"The object '{download_file_name}' does not exist.")
             # downloads the specified object
             self.s3.Bucket(self.config['bucket_name']).download_file(download_file_name, download_path)
-            print(f"File \"{download_file_name}\"was downloaded from \"{self.config['bucket_name']}\" and saved as {download_path}")
+            self.logger.info(f"File \"{download_file_name}\"was downloaded from \"{self.config['bucket_name']}\" and saved as {download_path}")
         else:
             raise Exception(f"Bucket {self.config['bucket_name']} does not exist")
