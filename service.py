@@ -1,14 +1,8 @@
-import os
-
 import boto3
 import yaml
-from botocore.exceptions import ClientError
 import sys
 from pathlib import Path
-
-ROOT_DIR = Path(__file__).parent
-TEST_PATH = ROOT_DIR / 'download_files/s3_buildings/kharkiv_info_downloaded.json'
-print(TEST_PATH)
+from constants import ROOT_DIR
 
 class Service:
     def __init__(self, bucket: str):
@@ -23,7 +17,7 @@ class Service:
 
     def _load_config(self, bucket):
         """Load and parse the config file."""
-        if not os.path.exists(self.config_file):
+        if not Path(self.config_file).exists():
 
             raise FileExistsError(f"Configuration file '{self.config_file}' not found. Terminating program.")
 
@@ -34,12 +28,6 @@ class Service:
             except yaml.YAMLError as e:
                 print(f"Failed to parse configuration file: {e}. Terminating program.")
                 sys.exit(1)
-
-        # try:
-        #     # return yaml.safe_load(file)
-        #     raise yaml.YAMLError
-        # except yaml.YAMLError as e:
-        #     print(f"Failed to parse configuration file: {e}. Terminating program.")
 
 
     def _validate_schemas(self):
@@ -63,7 +51,7 @@ class Service:
             print(f"Error retrieving bucket list: {e}")
             return []
 
-    def upload_file_to_s3(self, upload_file_name, object_name_in_s3=None):
+    def upload_file_to_s3(self, upload_file_name: str, object_name_in_s3=None):
         """
         Upload a file to an S3 bucket.
 
@@ -80,7 +68,7 @@ class Service:
         else:
             raise Exception(f"Bucket {self.config['bucket_name']} does not exist")
 
-    def download_file_from_s3(self, download_file_name, download_path):
+    def download_file_from_s3(self, download_file_name: str, download_path: str):
         """
         Download a file from an S3 bucket.
 

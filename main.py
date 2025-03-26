@@ -1,12 +1,7 @@
-import boto3
-from botocore.exceptions import ClientError
-from service import Service
 from buildings_service import BuildingsService
+from constants import UPLOAD_FOLDER, DOWNLOAD_FOLDER
 
 if __name__ == '__main__':
-    # print(all_buckets_in_s3())
-    # print(list(s3.buckets.all()))
-
     # Upload
     # bucket_name = 's3-storage-classes-demo-2025-3month'
     # bucket_name = 's3-storage-classes-2025-3month-buildings'
@@ -32,12 +27,11 @@ if __name__ == '__main__':
         # object_name_in_s3 = 'ua/kharkiv/nested_data_20_03.json'
         # building_service = Service(config_file='configs/config_buildings.yaml')
         # building_service.upload_file_to_s3(upload_file_name, object_name_in_s3)
-        upload_file_name = 'uploaded_files/s3_buildings/kharkiv1_info.json'
-        # TODO: pathlib
+        upload_file_name = UPLOAD_FOLDER / 's3_buildings/kharkiv1_info.json'
         building_service_object1 = BuildingsService(bucket='buildings')
         building_service_object1.upload_file(upload_file_name)
 
-        copy_file_name = 'uploaded_files/s3_buildings/kharkiv1_info_copy.json'
+        copy_file_name = UPLOAD_FOLDER / 's3_buildings/kharkiv1_info_copy.json'
         building_service_object1.download_file(copy_file_name, {
             "country": "Ukraine",
             "city": "Kharkiv",
@@ -45,9 +39,9 @@ if __name__ == '__main__':
             "file_name": "kharkiv1_info.json",
         })
 
-        # download_file_name = 'Ukraine/Kharkiv/street1/kharkiv1_info.json'
-        # download_path = r'download_files/s3_buildings/kharkiv1_info_downloaded.json'
-        # building_service_object1.download_file_from_s3(download_file_name, download_path)
+        download_file_name = 'Ukraine/Kharkiv/street1/kharkiv1_info.json'
+        download_path = DOWNLOAD_FOLDER / 's3_buildings/kharkiv1_info_downloaded.json'
+        building_service_object1.download_file_from_s3(download_file_name, download_path)
     except Exception as e:
         print(f"Error occurred: {e}")
         raise
