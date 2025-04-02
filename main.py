@@ -48,5 +48,4 @@ if __name__ == '__main__':
         print(f"Error occurred: {e}")
         raise
 
-# https://aws-vlada-v1.signin.aws.amazon.com/console
 
